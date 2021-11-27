@@ -3,7 +3,7 @@
 
 // バスが停車して乗降者数が記録されるたびに、その位置の緯度経度が送られてくる。
 // それを最寄のバス停名称に変換する機能をつくるよ
-// この機能をまとめた、struct FindNearestBusStop を作成
+// この機能をまとめた、struct FindNearestBusStop{} を作成
 // 入力は、バス停の一覧（Dictionary）、バスの停車位置緯度(Double)、バスの停車位置経度(Double)
 // 出力は、最寄のバス停名称（String）
 
@@ -17,8 +17,8 @@ struct FindNearestBusStop{ //バスの停車位置緯度経度から最寄のバ
         "busStop020": ["name": "市役所前", "lat": 35.7, "lon": 139.72],
         "busStop030": ["name": "市民会館前", "lat": 35.8, "lon": 139.73]
     ]
-    var latRecord = 35.6 //バスの停止位置緯度を代入する
-    var lonRecord = 139.7 //バスの停止位置経度を代入する
+    var latRecord = 35.6 //仮のデータを入れておく。バスの停止位置緯度を代入する
+    var lonRecord = 139.7 //仮のデータを入れておく。バスの停止位置経度を代入する
     
     var name1 = "" // for-inループ用　各バス停の名称
     var lat1 = 0.0 // for-inループ用　各バス停の緯度
@@ -34,7 +34,7 @@ struct FindNearestBusStop{ //バスの停車位置緯度経度から最寄のバ
     mutating func findBusStop(){
         for busStopID in busStopList.keys{
               print("key：\(busStopID)") //確認用
-              print("value：\(busStopList[busStopID]!)")
+              print("value：\(busStopList[busStopID]!)") //確認用
             name1 = busStopList[busStopID]!["name"]as! String
             lat1 = busStopList[busStopID]!["lat"]as! Double
             lon1 = busStopList[busStopID]!["lon"]as! Double
@@ -77,22 +77,27 @@ findNearestBusStop.busStopList = busStopListTokyo
 //StructのbusStopList（初期値）に実際のバス停データを代入するよ
 
 
-//StructのlatRecord, lonRecord にバスの停止位置緯度経を代入するよ
+//StructのlatRecord, lonRecord（初期値）にバスの停止位置緯度経を代入するよ
 findNearestBusStop.latRecord = 35.66643262 //新橋付近
 findNearestBusStop.lonRecord = 139.7581484 //新橋付近
-
-//下記に入れ替えて動作確認
-// findNearestBusStop.latRecord = 35.67502467 //有楽町付近
-// findNearestBusStop.lonRecord = 139.7632284 //有楽町付近
-// findNearestBusStop.latRecord = 35.68163993 //東京付近
-// findNearestBusStop.lonRecord = 139.7666349 //東京付近
-
-
-
 findNearestBusStop.findBusStop() //関数を実行
-
+print("nearestBusStopName ::: \(findNearestBusStop.nearestBusStopName) ::: ") //最寄バス停をプリント
 findNearestBusStop.distanceMin = 100000.0 //次のバス停で止まった時のために初期値に戻しておくよ
 
-print("nearestBusStopName ::: \(findNearestBusStop.nearestBusStopName)") //最寄バス停をプリント
 
 
+//有楽町でテストだよ
+findNearestBusStop.latRecord = 35.67502467 //有楽町付近
+findNearestBusStop.lonRecord = 139.7632284 //有楽町付近
+findNearestBusStop.findBusStop() //関数を実行
+print("nearestBusStopName ::: \(findNearestBusStop.nearestBusStopName) ::: ") //最寄バス停をプリント
+findNearestBusStop.distanceMin = 100000.0 //次のバス停で止まった時のために初期値に戻しておくよ
+
+
+
+//東京でテストだよ
+findNearestBusStop.latRecord = 35.68163993 //東京付近
+findNearestBusStop.lonRecord = 139.7666349 //東京付近
+findNearestBusStop.findBusStop() //関数を実行
+print("nearestBusStopName ::: \(findNearestBusStop.nearestBusStopName) ::: ") //最寄バス停をプリント
+findNearestBusStop.distanceMin = 100000.0 //次のバス停で止まった時のために初期値に戻しておくよ
