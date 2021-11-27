@@ -1,7 +1,12 @@
 //参考　コード　https://softmoco.com/swift-basics/swift-for.php
 //参考　緯度経度の1度の距離　https://www.wingfield.gr.jp/archives/9721
 
-// バスの乗降者数が記録されるたびに、その位置の緯度経度が送られてくるので、それをバス停名称に変換する機能をつくるよ
+// バスが停車して乗降者数が記録されるたびに、その位置の緯度経度が送られてくる。
+// それを最寄のバス停名称に変換する機能をつくるよ
+// この機能をまとめた、struct FindNearestBusStop を作成
+// 入力は、バス停の一覧（Dictionary）、バスの停車位置緯度(Double)、バスの停車位置経度(Double)
+// 出力は、最寄のバス停名称（String）
+
 
 import UIKit
 import Foundation
@@ -15,15 +20,17 @@ var lonRecord2 = 139.7632284
 var latRecord3 = 35.68163993 //東京付近
 var lonRecord3 = 139.7666349
 
-// バス停の位置はあらかじめ緯度経度を調査して定数にしておくよ
-// 辞書型（そのvalueも辞書型）だよ
-let busStopList = [
-    "busStop010": ["name": "東京", "lat": 35.6813, "lon": 139.7671], // key : バス停名称,緯度,経度
-    "busStop020": ["name": "有楽町", "lat": 35.6749, "lon": 139.7629],
-    "busStop030": ["name": "新橋", "lat": 35.6664, "lon": 139.7583]
-]
 
-struct FindNearestBusStop{
+
+
+
+struct FindNearestBusStop{ //バスの停車位置緯度経度から最寄のバス停を返すStructだよ
+    
+    var busStopList = [ //仮のデータを入れておく。実行の際はバス停のデータを代入する
+        "busStop010": ["name": "○○○○", "lat": 35.6, "lon": 139.71], // key : バス停名称,緯度,経度
+        "busStop020": ["name": "△△△△", "lat": 35.7, "lon": 139.72],
+        "busStop030": ["name": "□□□□", "lat": 35.8, "lon": 139.73]
+    ]
     
     var name1 = "" // for-inループ用　各バス停の名称
     var lat1 = 0.0 // for-inループ用　各バス停の緯度
@@ -38,14 +45,14 @@ struct FindNearestBusStop{
     
     mutating func findBusStop(){
         for busStopID in busStopList.keys{
-            print("key：\(busStopID)")
-            print("value：\(busStopList[busStopID]!)")
+              print("key：\(busStopID)")
+              print("value：\(busStopList[busStopID]!)")
             name1 = busStopList[busStopID]!["name"]as! String
             lat1 = busStopList[busStopID]!["lat"]as! Double
             lon1 = busStopList[busStopID]!["lon"]as! Double
-            print("name：\(name1)")
-            print("lat：\(lat1)")
-            print("lon：\(lon1)")
+              print("name：\(name1)")
+              print("lat：\(lat1)")
+              print("lon：\(lon1)")
             distance = sqrt(pow((lat1 - latRecord3)*111, 2.0) + pow((lon1 - lonRecord3)*93, 2.0))*1000
             // latRecord1~3とlonRecord1~3を入れ替えて(東京・有楽町・新橋を入れ替えて)動作確認
             // バスの停止位置の緯度経度と、バス停の緯度経度から、停止位置とバス停の距離distanceを算出
@@ -67,6 +74,18 @@ struct FindNearestBusStop{
 
 
 var findNearestBusStop = FindNearestBusStop() // structのインスタンスを作成
+
+
+// バス停の位置はあらかじめ緯度経度を調査して定数にしておくよ
+// 辞書型（そのvalueも辞書型）だよ
+let busStopListTokyo = [
+    "busStop010": ["name": "東京", "lat": 35.6813, "lon": 139.7671], // key : バス停名称,緯度,経度
+    "busStop020": ["name": "有楽町", "lat": 35.6749, "lon": 139.7629],
+    "busStop030": ["name": "新橋", "lat": 35.6664, "lon": 139.7583]
+]
+
+findNearestBusStop.busStopList = busStopListTokyo
+//StructのbusStopList（初期値）に実際のバス停データを代入するよ
 
 findNearestBusStop.findBusStop()
 
